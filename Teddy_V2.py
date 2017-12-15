@@ -11,14 +11,13 @@ import asyncio
 from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
+import random
 
 
 
-# Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
-client = Bot(description="Teddy_V2 by teddy robbins", command_prefix="!", pm_help = True)
 
-# This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
-# Do not mess with it because the bot can break, if you wish to do so, please consult me or someone trusted.
+client = Bot(description="Teddy_V2 by teddy robbins", command_prefix="!", pm_help = False)
+
 @client.event
 async def on_ready():
 	print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to '+str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
@@ -29,20 +28,72 @@ async def on_ready():
 	print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
 	print('--------')
 
-# This is a basic example of a call and response command. You tell it do "this" and it does it.
-@client.command()
-async def sayHello(*args):
-    await client.say("Hello Legendary Key Robotics Team!")
-    
-# After you have modified the code, feel free to delete the line above (line 33) so it does not keep popping up everytime you initiate the ping commmand.
+@client.event
+async def on_message(message):
+    if message.content.upper().startswith("!SAY"): #say stuff
+        await client.send_message(message.channel, message.content[5:])
+    elif message.content.upper().startswith("!SOURCECODE"): #bot's github
+        await client.send_message(message.channel, "https://github.com/trobb20/Trobb_V2")
+    elif message.content.upper().startswith("!LCGIT"): #lc github
+        await client.send_message(message,channel, "https://github.com/trobb20/LC_Robotics_18")
+    elif message.content.upper().startswith("!CONVERT"): #convert command
+        await client.send_message(message.channel,"Type starting units:")
+        ratioD1 = 0.
+        type1 = await client.wait_for_message(author=message.author)
+        type1_text = type1.content.upper()
+        if type1_text=="M":
+            ratioD1 = 1.
+        elif type1_text=="CM":
+            ratioD1 = 100.
+        elif type1_text=="MM":
+            ratioD1 = 1000.
+        elif type1_text=="FT":
+            ratioD1 = 3.28
+        elif type1_text=="IN":
+            ratioD1 = 12*3.28
+        else:
+            await client.send_message(message.channel, "Invalid unit.")
+        await client.send_message(message.channel, "Type final units:")
+        ratioD2 = 0.
+        type2 = await client.wait_for_message(author=message.author)
+        type2_text = type2.content.upper()
+        if type2_text=="M":
+            ratioD2 = 1.
+        elif type2_text=="CM":
+            ratioD2 = 100.
+        elif type2_text=="MM":
+            ratioD2 = 1000.
+        elif type2_text=="FT":
+            ratioD2 = 3.28
+        elif type2_text=="IN":
+            ratioD2 = 12*3.28
+        else:
+            await client.send_message(message.channel, "Invalid unit.")
+        await client.send_message(message.channel, "Type the number you want to convert:")
+        numbermsg = await client.wait_for_message(author=message.author)
+        number=float(numbermsg.content)
+        final = str(number*(ratioD2/ratioD1))
+        '''await client.send_message(message.channel, "TELEMETRY")
+        await client.send_message(message.channel, str(type1_text))
+        await client.send_message(message.channel, str(type2_text))
+        await client.send_message(message.channel, str(ratioD1))
+        await client.send_message(message.channel, str(ratioD2))
+        await client.send_message(message.channel, str(number))'''
+        await client.send_message(message.channel, "Your conversion is:")
+        await client.send_message(message.channel, final+" "+type2_text.lower())
+    elif message.content.upper().startswith("!QUOTE"):
+        quoteF = open('quotes.txt','r')
+        quoteIndex = random.randint(0,49)
+        quoteL = quoteF.readlines()
+        quoteS = quoteL[quoteIndex].rstrip("\n")
+        await client.send_message(message.channel, quoteS)
+    elif message.content.upper().startswith("!SUPREMELEADER"):
+        await client.send_message(message.channel, "Our supreme leader is Teddy, bow before his robotics abilities.")
+
+
+
+
 
 client.run('MzkxMjQ3Mzg0NjE4NzI5NDgz.DRWIGA.Xykn4_vPbh0UAnYBOt0iKTyNqUY')
-
-# Basic Bot was created by Habchy#1665
-# Please join this Discord server if you need help: https://discord.gg/FNNNgqb
-# Please modify the parts of the code where it asks you to. Example: The Prefix or The Bot Token
-# This is by no means a full bot, it's more of a starter to show you what the python language can do in Discord.
-# Thank you for using this and don't forget to star my repo on GitHub! [Repo Link: https://github.com/Habchy/BasicBot]
-
 # The help command is currently set to be Direct Messaged.
 # If you would like to change that, change "pm_help = True" to "pm_help = False" on line 9.
