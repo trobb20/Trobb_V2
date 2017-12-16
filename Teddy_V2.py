@@ -44,7 +44,7 @@ async def on_message(message):
 	elif message.content.upper().startswith("!SOURCECODE"): #bot's github
 		await client.send_message(message.channel, "https://github.com/trobb20/Trobb_V2")
 	elif message.content.upper().startswith("!LCGIT"): #lc github
-		await client.send_message(message,channel, "https://github.com/trobb20/LC_Robotics_18")
+		await client.send_message(message.channel, "https://github.com/trobb20/LC_Robotics_18")
 	elif message.content.upper().startswith("!CONVERT"): #convert command
 		await client.send_message(message.channel,"Type starting units:")
 		ratioD1 = 0.
@@ -95,7 +95,7 @@ async def on_message(message):
 			quoteF = open('quotes.txt','r',encoding="utf8")
 		except:
 			await client.send_message(message.channel, "Error opening quotes file")
-		
+
 		quoteIndex = random.randint(0,49)
 		quoteL = quoteF.readlines()
 		quoteS = quoteL[quoteIndex].rstrip("\n")
@@ -132,7 +132,7 @@ async def on_message(message):
 						monthsLeft = int(daysLeft) // 30
 						daysLeft = daysLeft%30
 					await client.send_message(message.channel, "There are %s year(s) %s month(s) and %s day(s) until the target date"%(yearsLeft,monthsLeft,daysLeft))
-					
+
 		elif answerContent == "new":
 			await client.send_message(message.channel, "Input Countdown Name, no spaces please")
 			namemsg=await client.wait_for_message(author=message.author)
@@ -161,7 +161,7 @@ async def on_message(message):
 			countdownF = open("countdowns.txt","a",encoding="utf8")
 			countdownF.write("%s,%d,%d,%d"%(str(name),targetyear,targetmonth,targetday)+"\n")
 			countdownF.close()
-			
+
 			await client.send_message(message.channel, "Countdown saved")
 
 
