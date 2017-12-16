@@ -32,6 +32,15 @@ async def on_ready():
 async def on_message(message):
 	if message.content.upper().startswith("!SAY"): #say stuff
 		await client.send_message(message.channel, message.content[5:])
+	elif message.content.upper().startswith("!HELP"):
+		await client.send_message(message.channel, "Check your dms!")
+		await client.send_message(message.author, "Command prefix is !")
+		await client.send_message(message.author, "say: make me say anything, duh")
+		await client.send_message(message.author, "sourcecode: get my source code")
+		await client.send_message(message.author, "lcgit: get the robotics github")
+		await client.send_message(message.author, "convert: convert distance measurements, m, cm, mm, in, and ft")
+		await client.send_message(message.author, "countdown: set a countdown to any date, what are you waiting for?")
+		await client.send_message(message.author, "---------------------------------")
 	elif message.content.upper().startswith("!SOURCECODE"): #bot's github
 		await client.send_message(message.channel, "https://github.com/trobb20/Trobb_V2")
 	elif message.content.upper().startswith("!LCGIT"): #lc github
