@@ -36,6 +36,7 @@ async def on_message(message):
 		await client.send_message(message.channel, "Check your dms!")
 		await client.send_message(message.author, "Command prefix is !")
 		await client.send_message(message.author, "say: make me say anything, duh")
+		await client.send_message(message.author, "math: do math using python syntax")
 		await client.send_message(message.author, "sourcecode: get my source code")
 		await client.send_message(message.author, "lcgit: get the robotics github")
 		await client.send_message(message.author, "convert: convert distance measurements, m, cm, mm, in, and ft")
@@ -106,12 +107,12 @@ async def on_message(message):
 	elif message.content.upper().startswith("!COUNTDOWN"):
 		await client.send_message(message.channel, "Access Countdown or Create New? (type access or new)")
 		answer = await client.wait_for_message(author=message.author)
-		answerContent = answer.content
+		answerContent = answer.content.lower()
 		if answerContent == "access":
 			countdownF = open("countdowns.txt","r",encoding="utf8")
 			await client.send_message(message.channel, "Input Countdown Name")
 			namemsg=await client.wait_for_message(author=message.author)
-			name=namemsg.content
+			name=namemsg.content.lower()
 			for line in countdownF.readlines():
 				L = line.split(",")
 				if L[0]==name:
@@ -136,7 +137,7 @@ async def on_message(message):
 		elif answerContent == "new":
 			await client.send_message(message.channel, "Input Countdown Name, no spaces please")
 			namemsg=await client.wait_for_message(author=message.author)
-			name=namemsg.content
+			name=namemsg.content.lower()
 			await client.send_message(message.channel, "Input Target Date as mm/dd/yyyy")
 			datemsg=await client.wait_for_message(author=message.author)
 			dateS=datemsg.content
@@ -163,6 +164,16 @@ async def on_message(message):
 			countdownF.close()
 
 			await client.send_message(message.channel, "Countdown saved")
+	elif message.content.upper().startswith("!MATH"):
+		await client.send_message(message.channel, "Input your expression in python format")
+		expressmsg=await client.wait_for_message(author=message.author)
+		express=expressmsg.content
+		try:
+			final = str(eval(express))
+			await client.send_message(message.channel, "Your answer is: "+final)
+		except:
+			await client.send_message(message.channel, "I could not understand your expression")
+	
 
 
 
