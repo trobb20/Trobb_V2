@@ -13,6 +13,7 @@ from discord.ext import commands
 import platform
 import random
 import datetime
+import urllib.request
 
 
 
@@ -37,10 +38,11 @@ async def on_message(message):
 		await client.send_message(message.author, "Command prefix is !")
 		await client.send_message(message.author, "say: make me say anything, duh")
 		await client.send_message(message.author, "math: do math using python syntax")
-		await client.send_message(message.author, "sourcecode: get my source code")
-		await client.send_message(message.author, "lcgit: get the robotics github")
+		await client.send_message(message.author, "dankmeme: gets you a fresh meme from the front page of r/dankmemes")
 		await client.send_message(message.author, "convert: convert distance measurements, m, cm, mm, in, and ft")
 		await client.send_message(message.author, "countdown: set a countdown to any date, what are you waiting for?")
+		await client.send_message(message.author, "sourcecode: get my source code")
+		await client.send_message(message.author, "lcgit: get the robotics github")
 		await client.send_message(message.author, "---------------------------------")
 	elif message.content.upper().startswith("!SOURCECODE"): #bot's github
 		await client.send_message(message.channel, "https://github.com/trobb20/Trobb_V2")
@@ -173,6 +175,42 @@ async def on_message(message):
 			await client.send_message(message.channel, "Your answer is: "+final)
 		except:
 			await client.send_message(message.channel, "I could not understand your expression")
+	elif message.content.upper().startswith("!DANKMEME"):
+		await client.send_message(message.channel, "Finding you a good meme, this may take a sec...")
+		links=[]
+		try:
+			with urllib.request.urlopen('https://www.reddit.com/r/dankmemes/') as response:
+			   html = response.read().decode("utf8")
+		except:
+			await client.send_message(message.channel, "Unfortunately, our meme source is overwhelmed by requests, check back again soon!")
+		else:
+			startIndex=html.find('<div id="siteTable"')
+			#print(startIndex)
+			endIndex=html.find('<div class="nav-buttons">')
+			#print(endIndex)
+			startLinkIndex=startIndex
+
+			for i in range(0,27):
+				startLinkIndex=html.find('data-url="',startLinkIndex,endIndex)+10
+				#print(startLinkIndex)
+				i=startLinkIndex
+				
+				while True:
+					if html[i]=='"':
+						endLinkIndex=i
+						break
+					i=i+1
+				#print(endLinkIndex)
+				currentLink = html[startLinkIndex:endLinkIndex]
+				links.append(currentLink)
+				i=i+1
+				startLinkIndex=endLinkIndex+1
+		
+			memeIndex = random.randint(0,len(links))
+			await client.send_message(message.channel, links[memeIndex])
+			await client.send_message(message.channel, "Enjoy your meme!")
+		
+
 	
 
 
