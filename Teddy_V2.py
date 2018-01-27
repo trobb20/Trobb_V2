@@ -194,7 +194,7 @@ async def on_message(message):
 				startLinkIndex=html.find('data-url="',startLinkIndex,endIndex)+10
 				#print(startLinkIndex)
 				i=startLinkIndex
-				
+
 				while True:
 					if html[i]=='"':
 						endLinkIndex=i
@@ -205,13 +205,15 @@ async def on_message(message):
 				links.append(currentLink)
 				i=i+1
 				startLinkIndex=endLinkIndex+1
-		
+
 			memeIndex = random.randint(0,len(links))
 			await client.send_message(message.channel, links[memeIndex])
 			await client.send_message(message.channel, "Enjoy your meme!")
-		
+	elif message.author.nick.lower() == "griffin":
+		await client.send_message(message.author, "https://i.kinja-img.com/gawker-media/image/upload/s--Dsm8Ht6G--/c_scale,fl_progressive,q_80,w_800/v4dcuuxjgvs2tixanwhh.png")
 
-	
+
+
 
 
 
