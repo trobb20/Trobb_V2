@@ -28,6 +28,14 @@ async def on_ready():
 		print('Use this link to invite {}:'.format(client.user.name))
 		print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
 		print('--------')
+		global required
+		now = datetime.datetime.now()
+		if now.minute<=58:
+			required = now.minute+2
+		elif now.minute==59:
+			required = 1
+		elif now.minute==0:
+			required = 2
 
 @client.event
 async def on_message(message):
@@ -209,8 +217,28 @@ async def on_message(message):
 			memeIndex = random.randint(0,len(links))
 			await client.send_message(message.channel, links[memeIndex])
 			await client.send_message(message.channel, "Enjoy your meme!")
-	elif message.author.nick.lower() == "griffin":
-		await client.send_message(message.author, "https://i.kinja-img.com/gawker-media/image/upload/s--Dsm8Ht6G--/c_scale,fl_progressive,q_80,w_800/v4dcuuxjgvs2tixanwhh.png")
+	'''elif message.author.nick.lower() == "teddy":
+		msg1 = await client.wait_for_message(author=message.author)
+		if now.minute<required:
+			await client.send_message(message.channel, "Griffin please stop spamming.")
+			now = datetime.datetime.now()
+			if now.minute<=58:
+				required = now.minute+2
+			elif now.minute==59:
+				required = 1
+			elif now.minute==0:
+				required = 2
+		else:
+			pass
+			now = datetime.datetime.now()
+			if now.minute<=58:
+				required = now.minute+2
+			elif now.minute==59:
+				required = 1
+			elif now.minute==0:
+				required = 2
+	elif message.author.nick.lower() == "derek":
+		await client.send_message(message.channel, "@everyone, Derek has spoken, please listen.")'''
 
 
 
